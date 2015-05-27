@@ -1,0 +1,17 @@
+{
+    "contents" : "fx <- read.csv(\"FXmonthly.csv\")\nsp <- read.csv(\"sp500.csv\") \nfx <- fx[-1,]\nfx\n\nfxsp  <- cbind(sp, fx)\nfxsp\n\nhelp(cbind)\n\n#1 Discuss correlation amongst dimensions of fx. How does this relate to the applicability of factor modelling? \n\n# There should be correlation among dimensions of fx because currencies are correlated with both positive and negative correlations.\n# The factor model rotations assume that there is no correlation.  Simply stated, the factors of the first PC should be orthoganal to the subsequent PC's but if there is in fact correlation this will throw off this assumption.\n\n\n#2 Fit, plot, and interpret principal components. \npcfx <- prcomp(fx, scale=TRUE)\nplot(pcfx)\npredict(pcfx)[,1:2]\nzpcfx <- predict(pcfx)\nt( round(pcfx$rotation[,1:2],2) )\n# PC1  <- strong us dollar?\n# PC2  <- week US dollar?\n\n#3 Regress SP500 returns on to currency movement factors, using both ‘glm on ﬁrst K’ and lasso techniques. Use the results to add to your factor interpretation. \n\n#4 Fit lasso to the original covariates and describe how it differs from PCR here. \n\n#5 Fit marginal regression and PLS and compare to PCA.\n",
+    "created" : 1432744385326.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2910202842",
+    "id" : "BEAAAB30",
+    "lastKnownWriteTime" : 1432747202,
+    "path" : "C:/Users/Eddie/Google Drive/Academics/Big Data/9/HW7/fx.r",
+    "project_path" : "fx.r",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

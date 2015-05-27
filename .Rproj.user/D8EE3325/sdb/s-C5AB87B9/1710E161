@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1432743198847.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "1710E161",
+    "lastKnownWriteTime" : 21392300099829876,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "zfood",
+        "contentUrl" : "content?title=zfood&file=c606f650e16644b281091e3926f0ca20.htm",
+        "displayedObservations" : 25,
+        "displayedVariables" : 10,
+        "totalObservations" : 25,
+        "variables" : 9
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

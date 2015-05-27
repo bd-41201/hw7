@@ -1,0 +1,16 @@
+{
+    "contents" : "### *** European Protein Consumption, in grams/person-day *** ###\nfood <- read.csv(\"protein.csv\", row.names=1) # 1st column is country name\n## scale the data\nfood\nxfood <- scale(food) \nxfood\n\nhelp(scale)\n\n## first, consider just Red and White meat clusters\n(grpMeat <- kmeans(xfood[,c(\"WhiteMeat\",\"RedMeat\")], centers=3))\n\nplot(xfood[,\"RedMeat\"], xfood[,\"WhiteMeat\"], xlim=c(-2,2.75), \n    type=\"n\", xlab=\"Red Meat\", ylab=\"White Meat\")\ntext(xfood[,\"RedMeat\"], xfood[,\"WhiteMeat\"], labels=rownames(food), \n    col=rainbow(3)[grpMeat$cluster])\n\n## same plot, but now with clustering on all protein groups\ngrpProtein <- kmeans(xfood, centers=7, nstart=50) ## change the number of centers to see what happens.\ngrpProtein\n\nplot(xfood[,\"RedMeat\"], xfood[,\"WhiteMeat\"], xlim=c(-2,2.75), \n    type=\"n\", xlab=\"Red Meat\", ylab=\"White Meat\")\ntext(xfood[,\"RedMeat\"], xfood[,\"WhiteMeat\"], labels=rownames(food), \n    col=rainbow(7)[grpProtein$cluster]) ## col is all that differs from first plot\n\n\n### WEEK 8 FACTOR STUFF\n\nfood <- read.csv(\"protein.csv\", row.names=1)\npcfood <- prcomp(food, scale=TRUE)\nzfood <- predict(pcfood) \n## predict is just doing the same thing as the below:\nz <- scale(food)%*%pcfood$rotation\nall(z==zfood)\n\n## implies rotations are on scale of standard deviations if scale=TRUE\n## looks like PC1 is an 'average diet', PC2 is iberian\nt( round(pcfood$rotation[,1:2],2) )\n\n## do some k-means, for comparison\ngrpProtein <- kmeans(scale(food), centers=7, nstart=20)\n\n## how do the PCs look?\npar(mfrow=c(1,2))\nplot(zfood[,1:2], type=\"n\", xlim=c(-4,5))\ntext(x=zfood[,1], y=zfood[,2], labels=rownames(food), col=rainbow(7)[grpProtein$cluster])\nplot(zfood[,3:4], type=\"n\", xlim=c(-3,3))\ntext(x=zfood[,3], y=zfood[,4], labels=rownames(food), col=rainbow(7)[grpProtein$cluster])\n\n## how many do we need? tough to tell\nplot(pcfood, main=\"\")\nmtext(side=1, \"European Protein Principle Components\",  line=1, font=2)\n\n## summary puts these scree plots on a more intuitive scale: \n\t## proportion of variation explained.\nsummary(pcfood)\n",
+    "created" : 1432743141447.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1857116752",
+    "id" : "1603304B",
+    "lastKnownWriteTime" : 1432747270,
+    "path" : "C:/Users/Eddie/Google Drive/Academics/Big Data/9/HW7/protein.R",
+    "project_path" : "protein.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
