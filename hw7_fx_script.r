@@ -79,3 +79,22 @@ lasso <- cv.gamlr(x=as.matrix(fx_monthly[,1:23]), y=sp500[,2], nfolds=23)
 plot(lasso)
 coef(lasso, s="1se")
 
+## Bonus question - perform marginal regression and PLS
+# Marginal regression first
+phi <- cor(fx_monthly, sp500[,2])/apply(fx_monthly,2,sd)
+z <- as.matrix(fx_monthly)%*%phi
+fwd <- glm(sp500[,2] ~ z)
+
+# Check the fit via R2
+1-fwd$deviance/fwd$null.deviance
+# ~> [1] 0.2510244
+# Not great
+
+plot(fwd$fit, sp500[,2], pch=21, bg="lightgreen",
+  xlab="marginal regression fit",ylab="S&P 500 Return",main="Fitted S&P 500 Return vs Actual")
+text(-.125,.075, expression(R^2 %~~% 0.25))
+
+# Next, partial least squares (PLS)
+library(textir)
+summary(sp500pls <- pls(x=fx_monthly, y=sp500[,2],  K=4))
+plot(sp500pls, pch=21, bg=8)
