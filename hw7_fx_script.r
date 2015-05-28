@@ -22,12 +22,33 @@ pca.fx.monthly <- prcomp(fx_monthly, scale=TRUE)
 plot(pca.fx.monthly, main="")
 mtext(side=1, "Foreign Exchange Principle Components",  line=1, font=2)
 
+# Create the matrix of principle component values for each observation
 z.pca.fx.monthly <- predict(pca.fx.monthly)
 
+# Split out the year of the observation from the rownames
 fx_monthly$year <- sapply(1:119, function(x) as.integer(unlist(strsplit(rownames(fx_monthly)[x],"2"))[2]))
 fx_monthly$year <- sapply(1:119, function(x) ifelse(fx_monthly$year[x]==0,2,fx_monthly$year[x]))
+# Label the month/year observations by which quartile the S&P 500 returns fall into
+sp500$quartile <- with(sp500, cut(sp500, breaks=quantile(sp500, probs=seq(0,1, by=0.25)), include.lowest=TRUE))
+sp500$quartile <- factor(sp500$quartile, labels=c("1","2","3","4"))
+
+# Plot PC1 against PC2 showing a printout of the rowname (Month/Year) at each point and color coding by year
 plot(z.pca.fx.monthly[,1:2],type="n")
 text(x=z.pca.fx.monthly[,1], y=z.pca.fx.monthly[,2], labels=rownames(z.pca.fx.monthly),col=rainbow(10)[fx_monthly$year])
+# With points color coded by SP500 returns
+plot(z.pca.fx.monthly[,1:2],type="n")
+text(x=z.pca.fx.monthly[,1], y=z.pca.fx.monthly[,2], labels=rownames(z.pca.fx.monthly),col=rainbow(4)[sp500$quartile])
+legend(-5,8.5,c("Bottom Quartile Returns","2nd Quartile Returns","3rd Quartile Returns","Top Quartile Returns"),lty=c(1,1,1,1),col=rainbow(4))
+
+# Plot PC2 against PC3 showing a printout of the rowname (Month/Year) at each point and color coding by year
+plot(z.pca.fx.monthly[,2:3],type="n")
+text(x=z.pca.fx.monthly[,2], y=z.pca.fx.monthly[,3], labels=rownames(z.pca.fx.monthly),col=rainbow(10)[fx_monthly$year])
+# With points color coded by SP500 returns
+plot(z.pca.fx.monthly[,2:3],type="n")
+text(x=z.pca.fx.monthly[,2], y=z.pca.fx.monthly[,3], labels=rownames(z.pca.fx.monthly),col=rainbow(4)[sp500$quartile])
+legend(3,-3,c("Bottom Quartile Returns","2nd Quartile Returns","3rd Quartile Returns","Top Quartile Returns"),lty=c(1,1,1,1),col=rainbow(4))
+
+
 
 ## Q3
 # glm on first k
